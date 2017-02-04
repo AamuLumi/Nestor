@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./built",
+    "target": "es5",
+    "moduleResolution": "node",
+    "removeComments": true,
+    "skipLibCheck": true,
+    "allowJs": true
+  },
+  "files" : [
+    "src/index.ts"
+  ]
+}

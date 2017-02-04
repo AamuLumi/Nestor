@@ -1,0 +1,24 @@
+{
+  "name": "nestor",
+  "version": "0.0.1",
+  "description": "Simple music bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./built/src/index.js",
+    "build": "tsc",
+    "deploy": "npm run build && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Florian Kauder <florian@kauder.fr>",
+  "license": "MIT",
+  "repository": "https://github.com/AamuLumi/Nestor",
+  "dependencies": {
+    "discord.js": "^11.0.0",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "googleapis": "^16.1.0",
+    "node-fetch": "^1.6.3",
+    "node-opus": "^0.2.4",
+    "uws": "^0.12.0",
+    "ytdl-core": "^0.8.0"
+  }
+}
