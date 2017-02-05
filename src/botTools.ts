@@ -4,6 +4,7 @@ import * as Discord from 'discord.js';
 import * as Messages from '../config/messages';
 import Tools from './tools';
 import YoutubeElement from './youtubeElement';
+import PPC, {PPCValue} from './ppc';
 
 const family = Credentials.family;
 const ip = Credentials.localAddress;
@@ -13,6 +14,7 @@ export default class BotTools {
 	bot: Discord.Client;
 	playing: boolean;
 	playedMusic: YoutubeElement;
+	ppc: PPC;
 	queue: Array<YoutubeElement>;
 	textChannel: Discord.TextChannel;
 	voiceChannel: Discord.VoiceChannel;
@@ -133,5 +135,40 @@ export default class BotTools {
 
 	sendHelp(): void {
 		this.sendMessage(Messages.helpMessage.join(''));
+	}
+
+	ppcAsk(from: Discord.User, to: Discord.User): void {
+		if (!this.ppc) {
+			this.sendMessage(from.username + ' défie ' + to.username + '. J\'attends la réponse.');
+			this.ppc = new PPC([from, to]);
+		}
+	}
+
+	ppcAccept(from: Discord.User): void {
+		if (from.id === this.ppc.players[1].id){
+			this.sendMessage('Duel accepté. Dites-moi Papier, Pierre ou Ciseaux en message' +
+				' privé. Que le meilleur gagne !');
+		}
+	}
+
+	ppcRefuse(from: Discord.User): void {
+		if (from.id === this.ppc.players[1].id){
+			this.ppc = undefined;
+			this.sendMessage('Le duel a été refusé');
+		}
+	}
+
+	ppcSet(from: Discord.User, value: PPCValue): void {
+		this.ppc.set(from, value);
+
+		if (this.ppc.finished()){
+			let winner = this.ppc.getResult();
+			if (winner){
+				this.sendMessage(winner.username + ' a gagné. Bravo à lui !');
+				this.ppc = undefined;
+			} else {
+				this.sendMessage('Manche nulle ! Veuillez me renvoyer un nouveau coup.');
+			}
+		}
 	}
 }
