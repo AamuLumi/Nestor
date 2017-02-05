@@ -35,11 +35,11 @@ bot.on('disconnect', () => {
 bot.on('message', message => {
 	if (message.channel instanceof Discord.DMChannel){
 		let content = message.content.toLowerCase();
-		if (content.indexOf('pierre')) {
+		if (content.indexOf('pierre') === 0) {
 			botTools.ppcSet(message.author, PPCValue.Rock);
-		} else if (content.indexOf('papier')) {
+		} else if (content.indexOf('papier') === 0) {
 			botTools.ppcSet(message.author, PPCValue.Paper);
-		} else if (content.indexOf('ciseau')) {
+		} else if (content.indexOf('ciseaux') === 0) {
 			botTools.ppcSet(message.author, PPCValue.Scissors);
 		}
 	}
