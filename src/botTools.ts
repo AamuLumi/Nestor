@@ -66,7 +66,7 @@ export default class BotTools {
 		const stream = YTDL(ytElement.url, options);
 		this.audioDispatcher = this.voiceConnection.playStream(stream, {seek: 0, volume: 0.5});
 
-		this.playedMusic = ytElement;
+		this.setPlayedMusic(ytElement);
 
 		this.audioDispatcher.on('end', () => {
 			this.playing = false;
@@ -76,8 +76,30 @@ export default class BotTools {
 				this.queue.shift();
 			} else {
 				this.sendMessage(Tools.getRandomFromArray<string>(Messages.noMusicMessages));
+				this.setPlayedMusic(undefined);
 			}
 		});
+	}
+
+	setPlayedMusic(ytElement: YoutubeElement){
+		this.playedMusic = ytElement;
+
+		if (ytElement) {
+			this.bot.user.setPresence({
+				status: 'online',
+				afk: false,
+				game: {
+					name: ytElement.title ? ytElement.title : 'une musique',
+					url: ytElement.url
+				}
+			});
+		} else {
+			this.bot.user.setPresence({
+				status: 'idle',
+				afk: true,
+				game: {}
+			});
+		}
 	}
 
 	sendQueue(): void {
